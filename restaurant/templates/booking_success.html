@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Successful</title>
+</head>
+<body>
+    <h1>Booking Successful!</h1>
+<p>Thank you for your reservation, {{ reservation.name }}.</p>
+<p>Details:</p>
+<ul>
+    <li>Date: {{ reservation.date }}</li>
+    <li>Time: {{ reservation.time }}</li>
+    <li>Table: {{ reservation.table.number }} (Seats: {{ reservation.table.capacity }})</li>
+    <li>Guests: {{ reservation.guests }}</li>
+    <li>Booking Code: {{ reservation.booking_code }}</li>
+</ul>
+</body>
+</html>

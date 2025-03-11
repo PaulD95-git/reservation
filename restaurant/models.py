@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 import uuid
 
-# Create your models here.
-
 
 class Table(models.Model):
     number = models.IntegerField(unique=True)
