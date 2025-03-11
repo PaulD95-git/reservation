@@ -1,7 +1,13 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from .forms import ReservationForm
 
-# Create your views here.
 
-def index(request):
-    return HttpResponse("Hello, World")
+def book_table(request):
+    if request.method == "POST":
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("booking_success")  # Redirect after successful booking
+    else:
+        form = ReservationForm()
+        return render(request, "reservation_form.html", {"form": form})
