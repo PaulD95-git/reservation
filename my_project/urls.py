@@ -20,24 +20,15 @@ from django.contrib.auth import views as auth_views
 from restaurant import views  # Importing the views module
 
 urlpatterns = [
-   # Home page
     path('', views.home, name='home'),
-
-    # Reservation form
-    path('reserve/', views.book_table, name='book_table'),  
-
-    # Booking success page after booking
+    path('book_table/', views.book_table, name='book_table'),
     path('booking_success/', views.booking_success, name='booking_success'),
-
-    # Admin panel
-    path('admin/', admin.site.urls),  
-
-    # Django auth URLs
+    path('edit_booking/<uuid:booking_code>/', views.edit_booking, name='edit_booking'),
+    path('cancel_booking/<uuid:booking_code>/', views.cancel_booking, name='cancel_booking'),
+    path('signup/', views.signup, name='signup'),
+    path('manage_reservations/', views.manage_reservations, name='manage_reservations'),
+    path('add_reservation/', views.add_reservation, name='add_reservation'),
+    path('make_reservation/', views.make_reservation, name='make_reservation'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('signup/', views.signup, name='signup'),  # Sign up URL
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),  # Logout URL
-
-    # Booking edit and cancel URLs
-    path('edit/<uuid:booking_code>/', views.edit_booking, name='edit_booking'),
-    path('cancel/<uuid:booking_code>/', views.cancel_booking, name='cancel_booking'),
 ]

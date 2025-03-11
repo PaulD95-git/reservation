@@ -1,0 +1,49 @@
+{% extends 'home.html' %}
+
+{% block content %}
+  <h1>Manage Reservations</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Date</th>
+        <th>People</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for reservation in reservations %}
+        <tr>
+          <td>{{ reservation.name }}</td>
+          <td>{{ reservation.email }}</td>
+          <td>{{ reservation.phone_number }}</td>
+          <td>{{ reservation.reservation_date }}</td>
+          <td>{{ reservation.number_of_people }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No reservations yet.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{% url 'add_reservation' %}">Add a New Reservation</a>
+{% endblock %}
+
+{% extends 'home.html' %}
+
+{% block content %}
+  <h1>Add a New Reservation</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Reservation</button>
+  </form>
+
+  <a href="{% url 'manage_reservations' %}">Back to Manage Reservations</a>
+{% endblock %}
+

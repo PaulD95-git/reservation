@@ -49,3 +49,4 @@ class SignupForm(forms.ModelForm):
         if password != password_confirmation:
             raise forms.ValidationError("Passwords do not match.")
         return password_confirmation
+
