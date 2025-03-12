@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -147,6 +148,9 @@ LOGIN_REDIRECT_URL = 'book_table'
 
 # The base directory of your project
 BASE_DIR = Path(__file__).resolve().parent.parent
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # your development static files folder
+]
 
 # Define the path to the templates directory
 TEMPLATES_DIR = BASE_DIR / 'templates'  # This points to the templates folder in the project directory

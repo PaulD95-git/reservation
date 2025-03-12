@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 # Home view
+
+
 def home(request):
     return render(request, "home.html")
 
@@ -34,39 +36,42 @@ def booking_success(request):
 
 
 # Edit booking view (only for users who created the reservation)
-@login_required
+
 def edit_booking(request, booking_code):
     reservation = get_object_or_404(Reservation, booking_code=booking_code)
-
-    # Ensure that only the user who created the booking can edit it
-    if reservation.user != request.user:
-        return redirect("home")
+    print(f"Reservation for: {reservation.user}, Logged-in user: {request.user}")
 
     if request.method == "POST":
         form = ReservationForm(request.POST, instance=reservation)
         if form.is_valid():
             form.save()
-            return redirect("booking_success")
+            messages.success(request, "Reservation updated successfully.")
+            return redirect("manage_reservations")
     else:
         form = ReservationForm(instance=reservation)
 
     return render(request, "edit_booking.html", {"form": form, "reservation": reservation})
 
 
+
+
+
 # Cancel booking view (only for users who created the reservation)
-@login_required
+
+
+from django.http import JsonResponse
+
+
 def cancel_booking(request, booking_code):
     reservation = get_object_or_404(Reservation, booking_code=booking_code)
 
-    # Ensure that only the user who created the booking can cancel it
-    if reservation.user != request.user:
-        return redirect("home")
+    # Cancel the reservation (e.g., delete it or set status to canceled)
+    reservation.delete()
 
-    if request.method == "POST":
-        reservation.delete()
-        return redirect("home")
+    # Return a success response
+    return JsonResponse({'success': True})
 
-    return render(request, "cancel_booking.html", {"reservation": reservation})
+
 
 
 # User signup view
@@ -91,7 +96,7 @@ def signup(request):
 # Manage reservations for logged-in users
 @login_required
 def manage_reservations(request):
-    reservations = Reservation.objects.filter(user=request.user)
+    reservations = Reservation.objects.all()
     return render(request, 'manage_reservations.html', {'reservations': reservations})
 
 
@@ -108,7 +113,8 @@ def add_reservation(request):
     return render(request, 'restaurant/add_reservation.html', {'form': form})
 
 
-# Make a reservation (for guests or logged-in users)
+# Make a reservation
+@login_required
 def make_reservation(request):
     if request.method == 'POST':
         form = ReservationForm(request.POST)
@@ -119,3 +125,12 @@ def make_reservation(request):
         form = ReservationForm()  # Create a blank form for GET request
 
     return render(request, 'restaurant/reservation_form.html', {'form': form})
+
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html')
+
+
+def menu(request):
+    return render(request, 'menu.html')

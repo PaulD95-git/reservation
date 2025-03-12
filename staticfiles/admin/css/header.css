@@ -1,0 +1,76 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Navbar Styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #333;
+    color: white;
+}
+
+.menu-btn {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.nav-links ul {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: white;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #f1c40f; /* Gold color on hover */
+}
+
+/* Profile Button */
+.profile-btn a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.profile-img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+/* Main Content */
+main {
+    padding: 2rem;
+    background-color: #f4f4f4;
+    min-height: 80vh;
+}

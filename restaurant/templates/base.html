@@ -1,0 +1,88 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Reservation System{% endblock %}</title>
+
+    <!-- Link to custom CSS files in the 'static' directory -->
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <!-- Add any necessary JavaScript libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!-- For Font Awesome icons -->
+</head>
+<body>
+
+<!-- Header Section -->
+<header>
+    <div class="navbar">
+        <div class="menu-btn" id="menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <div class="brand">
+            <a href="{% url 'home' %}">Reservation System</a>
+        </div>
+
+        <nav class="nav-links" id="nav-links">
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'manage_reservations' %}">Manage Reservations</a></li>
+                <li><a href="{% url 'add_reservation' %}">Add Reservation</a></li>
+                <li><a href="{% url 'menu' %}">Menu</a></li> <!-- Added Menu Link -->
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        {% if user.is_authenticated %}
+        <div class="profile-btn">
+            <a href="{% url 'profile' %}">
+                {% if user.profile.picture %}
+                    <img src="{{ user.profile.picture.url }}" alt="Profile Picture" class="profile-img">
+                {% else %}
+                    <i class="fas fa-user-circle"></i> <!-- Default user icon -->
+                {% endif %}
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</header>
+
+<!-- Main Content -->
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<!-- Footer Section -->
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2025 Reservation System. All rights reserved.</p>
+        <p>Designed by Your Company.</p>
+    </div>
+</footer>
+
+<!-- Link to custom JavaScript -->
+<script src="{% static 'js/scripts.js' %}"></script>
+
+<script>
+    const menuBtn = document.getElementById('menu-btn');
+    const navLinks = document.getElementById('nav-links');
+
+    menuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+</script>
+
+</body>
+</html>
