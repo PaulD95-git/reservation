@@ -128,7 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirect URLs after logout and login
 LOGOUT_REDIRECT_URL = '/'  # Where to redirect after logout
-LOGIN_REDIRECT_URL = 'book_table'  # Where to redirect after login
+LOGIN_REDIRECT_URL = 'home'  # Where to redirect after login
 
 # The base directory of your project (redefined for convenience)
 BASE_DIR = Path(__file__).resolve().parent.parent
