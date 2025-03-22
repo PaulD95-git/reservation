@@ -1,0 +1,98 @@
+/* styles.css */
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* General Body and Background Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Make the header's background and text stand out */
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+}
+
+/* Add padding to the main content */
+main {
+    padding: 20px;
+}
+
+/* Additional styles for navigation */
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    margin-top: 30px;
+    text-align: center;
+}
+
+footer p {
+    font-size: 14px;
+}
+
+#hero {
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Ensure image doesn’t overflow */
+    z-index: 1;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire area */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Makes sure the image is behind the content */
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Ensure the button is above the image */
+}
+
+.btn {
+    background-color: #007BFF; /* Blue background */
+    color: white;
+    font-size: 18px;
+    padding: 15px 30px;
+    border-radius: 25px; /* Round corners */
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Google Map Section */
+#google-map {
+    width: 100%;
+    height: 500px;
+    margin-top: 20px;
+}
+

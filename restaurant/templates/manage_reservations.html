@@ -1,79 +1,52 @@
+{% extends 'base.html' %}
+
 {% block content %}
-  <h1>Manage Reservations</h1>
+    <div class="reservation-management">
+        <h1>Your Reservations</h1>
 
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Guests</th>
-        <th>Table</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="reservation-table">
-      {% for reservation in reservations %}
-      <tr id="reservation-{{ reservation.booking_code }}">
-        <td>{{ reservation.name }}</td>
-        <td>{{ reservation.email }}</td>
-        <td>{{ reservation.phone }}</td>
-        <td>{{ reservation.date }}</td>
-        <td>{{ reservation.time }}</td>
-        <td>{{ reservation.guests }}</td>
-        <td>{{ reservation.table }}</td>
-        <td>
-          <!-- Edit link -->
-          <a href="{% url 'edit_booking' reservation.booking_code %}">Edit</a> |
-          
-          <!-- Cancel form (this sends a POST request) -->
-          <form action="{% url 'cancel_booking' reservation.booking_code %}" method="POST" style="display:inline;" id="cancel-form-{{ reservation.booking_code }}">
-            {% csrf_token %}
-            <button type="submit" onclick="return confirm('Are you sure you want to cancel this reservation?')">Cancel</button>
-          </form>
-        </td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="8">No reservations found.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        {% if reservations %}
+            <table class="reservation-table">
+                <thead>
+                    <tr>
+                        <th>Reservation Code</th>
+                        <th>Date & Time</th>
+                        <th>Guests</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ reservation.booking_code }}</td>
+                            <td>{{ reservation.reservation_date }} at {{ reservation.reservation_time }}</td>
+                            <td>{{ reservation.guests }}</td>
+                            <td>
+                                <a href="{% url 'edit_booking' reservation.booking_code %}" class="btn edit-btn">Edit</a>
+                                <button class="btn cancel-btn" onclick="cancelReservation('{{ reservation.booking_code }}')">Cancel</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You have no reservations at the moment.</p>
+        {% endif %}
+    </div>
 
-  <br>
-  <a href="{% url 'add_reservation' %}">Add a New Reservation</a>
-  <br><br>
-  <a href="{% url 'home' %}">Back to Home</a>
-{% endblock %}
-
-<!-- JavaScript to handle canceling and removing rows dynamically -->
-{% block scripts %}
-<script>
-    document.querySelectorAll('form[id^="cancel-form"]').forEach(function(form) {
-      form.addEventListener('submit', function(event) {
-        event.preventDefault();
-  
-        var reservationRow = form.closest('tr');
-        var bookingCode = reservationRow.id.replace('reservation-', '');
-
-        fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: {
-                'X-CSRFToken': document.querySelector('[name="csrfmiddlewaretoken"]').value
+    <script>
+        function cancelReservation(bookingCode) {
+            console.log("Booking code:", bookingCode);  // Check if this value is valid
+            
+            if (!bookingCode) {
+                alert("Invalid reservation code.");
+                return;  // Exit if bookingCode is empty or invalid
             }
-        }).then(function(response) {
-            if (response.ok) {
-                // Remove the row from the table after successful cancellation
-                reservationRow.remove();
-            } else {
-                alert("Error canceling reservation.");
+            
+            const confirmation = confirm("Are you sure you want to cancel this reservation?");
+            if (confirmation) {
+                // Redirect to the cancel_booking view with the booking code
+                window.location.href = "{% url 'cancel_booking' booking_code=bookingCode %}";
             }
-        });
-      });
-    });
-</script>
+        }
+    </script>
 {% endblock %}

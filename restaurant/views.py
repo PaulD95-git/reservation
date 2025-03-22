@@ -127,10 +127,5 @@ def make_reservation(request):
     return render(request, 'restaurant/reservation_form.html', {'form': form})
 
 
-@login_required
-def profile(request):
-    return render(request, 'profile.html')
-
-
 def menu(request):
     return render(request, 'menu.html')

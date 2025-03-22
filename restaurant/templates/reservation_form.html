@@ -1,29 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book a Table</title>
-</head>
-<body>
-    <h1>Make a Reservation</h1>
+{% extends 'base.html' %}
 
-    <!-- Display opening hours -->
-    <p><strong>Opening Hours:</strong></p>
-    <ul>
-        <li>Monday - Friday: 09:00 AM - 08:00 PM</li>
-        <li>Saturday: 09:00 AM - 10:00 PM</li>
-        <li>Sunday: 10:00 AM - 05:00 PM</li>
-    </ul>
-    
-    <!-- Reservation form -->
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Book Now</button>
-    </form>
+{% block content %}
+    <div class="container">
+        <h1>Make a Reservation</h1>
 
-    <!-- Link back to homepage -->
-    <a href="{% url 'home' %}">Back to Home</a>
-</body>
-</html>
+        <!-- Display opening hours -->
+        <div class="opening-hours">
+            <p><strong>Opening Hours:</strong></p>
+            <ul>
+                <li>Monday - Friday: 09:00 AM - 08:00 PM</li>
+                <li>Saturday: 09:00 AM - 10:00 PM</li>
+                <li>Sunday: 10:00 AM - 05:00 PM</li>
+            </ul>
+        </div>
+
+        <!-- Reservation form -->
+        <form method="post" class="reservation-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Book Now</button>
+        </form>
+
+        <!-- Link back to homepage -->
+        <a href="{% url 'home' %}" class="back-home">Back to Home</a>
+    </div>
+{% endblock %}

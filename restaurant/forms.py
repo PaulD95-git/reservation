@@ -5,16 +5,44 @@ import datetime
 from django.contrib.auth.models import User
 
 
+from django import forms
+from .models import Reservation
+from django.core.exceptions import ValidationError
+import datetime
+from django.contrib.auth.models import User
+
+
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = ['name', 'email', 'phone', 'date', 'time', 'guests', 'table']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
-            'time': forms.TimeInput(attrs={'type': 'time'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Generate the available time slots for selection
+        self.fields['time'] = forms.ChoiceField(choices=self.get_time_choices(), widget=forms.Select())
+
+    def get_time_choices(self):
+        """Generate available time slots based on opening hours."""
+        opening_hours = {
+            (0, 1, 2, 3, 4): (9, 20),  # Mon-Fri: 09:00 - 20:00
+            (5,): (9, 22),             # Sat: 09:00 - 22:00
+            (6,): (10, 17),            # Sun: 10:00 - 17:00
+        }
+
+        choices = []
+        for days, (open_hour, close_hour) in opening_hours.items():
+            for hour in range(open_hour, close_hour):  # Exclude closing hour
+                choices.append((f"{hour:02d}:00", f"{hour:02d}:00"))
+
+        return choices
+
     def clean_time(self):
+        """Validate selected time based on opening hours."""
         date = self.cleaned_data.get("date")
         time = self.cleaned_data.get("time")
 
@@ -23,16 +51,22 @@ class ReservationForm(forms.ModelForm):
 
         day_of_week = date.weekday()  # Monday = 0, Sunday = 6
         opening_hours = {
-            (0, 1, 2, 3, 4): (datetime.time(9, 0), datetime.time(20, 0)),  # Mon-Fri: 09:00 - 20:00
-            (5,): (datetime.time(9, 0), datetime.time(22, 0)),             # Sat: 09:00 - 22:00
-            (6,): (datetime.time(10, 0), datetime.time(17, 0)),            # Sun: 10:00 - 17:00
+            (0, 1, 2, 3, 4): (9, 20),  # Mon-Fri: 09:00 - 20:00
+            (5,): (9, 22),             # Sat: 09:00 - 22:00
+            (6,): (10, 17),            # Sun: 10:00 - 17:00
         }
 
-        for days, (open_time, close_time) in opening_hours.items():
+        valid_times = []
+        for days, (open_hour, close_hour) in opening_hours.items():
             if day_of_week in days:
-                if not (open_time <= time <= close_time):
-                    raise ValidationError(f"Reservations can only be made between {open_time.strftime('%H:%M')} and {close_time.strftime('%H:%M')} on this day.")        
-        return time
+                valid_times = [datetime.time(hour, 0) for hour in range(open_hour, close_hour)]
+
+        selected_time = datetime.datetime.strptime(time, "%H:%M").time()
+        if selected_time not in valid_times:
+            raise ValidationError(f"Invalid time selection. Please select an hourly time between {valid_times[0].strftime('%H:%M')} and {valid_times[-1].strftime('%H:%M')}.")
+        
+        return selected_time
+
 
 
 class SignupForm(forms.ModelForm):
