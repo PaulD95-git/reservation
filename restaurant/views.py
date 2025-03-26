@@ -130,6 +130,9 @@ def make_reservation(request):
 def menu(request):
     return render(request, 'menu.html')
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 465f565e77fed44022d0516315700a0b840ee2bf
 def about(request):
     return render(request, 'about.html')

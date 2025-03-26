@@ -4,8 +4,8 @@
     <style>
         .reservation-management {
             max-width: 900px;
-            margin: auto;
             text-align: center;
+            padding: 20px;
         }
 
         .table-container {
@@ -26,6 +26,7 @@
             padding: 12px 16px;
             text-align: center;
             border-bottom: 1px solid #ddd;
+            white-space: nowrap;
         }
 
         .reservation-table th {
@@ -40,8 +41,9 @@
 
         .action-buttons {
             display: flex;
-            gap: 10px;
+            gap: 5px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -51,6 +53,7 @@
             border-radius: 5px;
             text-decoration: none;
             font-weight: bold;
+            white-space: nowrap;
         }
 
         .edit-btn {
@@ -76,11 +79,50 @@
             color: #555;
             margin-top: 20px;
         }
+
+        @media (max-width: 768px) {
+            .reservation-table thead {
+                display: none;
+            }
+
+            .reservation-table, .reservation-table tbody, .reservation-table tr, .reservation-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .reservation-table tr {
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 10px;
+                background: white;
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            .reservation-table td {
+                text-align: right;
+                padding: 10px;
+                position: relative;
+            }
+
+            .reservation-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                font-weight: bold;
+                text-align: left;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 5px;
+                align-items: center;
+            }
+        }
     </style>
 
     <div class="reservation-management">
         <h1 class="page-title">Your Reservations</h1>
-
         {% if reservations %}
             <div class="table-container">
                 <table class="reservation-table">
@@ -96,13 +138,13 @@
                     <tbody>
                         {% for reservation in reservations %}
                             <tr>
-                                <td>{{ reservation.booking_code }}</td>
-                                <td>
+                                <td data-label="Reservation Code">{{ reservation.booking_code }}</td>
+                                <td data-label="Date & Time">
                                     {{ reservation.date|date:"M d, Y" }} at {{ reservation.time|time:"h:i A" }}
                                 </td>
-                                <td>Table {{ reservation.table.number }}</td>
-                                <td>{{ reservation.guests }}</td>
-                                <td class="action-buttons">
+                                <td data-label="Table Number">Table {{ reservation.table.number }}</td>
+                                <td data-label="Guests">{{ reservation.guests }}</td>
+                                <td class="action-buttons" data-label="Actions">
                                     <a href="{% url 'edit_booking' reservation.booking_code %}" class="btn edit-btn">Edit</a>
                                     <button class="btn cancel-btn" data-url="{% url 'cancel_booking' reservation.booking_code %}" onclick="cancelReservation(this)">
                                         Cancel
@@ -156,7 +198,5 @@
         }
     </script>
 
-    <!-- SweetAlert2 for better pop-ups -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 {% endblock %}
