@@ -1,52 +1,162 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <style>
+        .reservation-management {
+            max-width: 900px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .reservation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .reservation-table th, .reservation-table td {
+            padding: 12px 16px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .reservation-table th {
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .reservation-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .edit-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #218838;
+        }
+
+        .cancel-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background-color: #c82333;
+        }
+
+        .no-reservations {
+            font-size: 18px;
+            color: #555;
+            margin-top: 20px;
+        }
+    </style>
+
     <div class="reservation-management">
-        <h1>Your Reservations</h1>
+        <h1 class="page-title">Your Reservations</h1>
 
         {% if reservations %}
-            <table class="reservation-table">
-                <thead>
-                    <tr>
-                        <th>Reservation Code</th>
-                        <th>Date & Time</th>
-                        <th>Guests</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for reservation in reservations %}
+            <div class="table-container">
+                <table class="reservation-table">
+                    <thead>
                         <tr>
-                            <td>{{ reservation.booking_code }}</td>
-                            <td>{{ reservation.reservation_date }} at {{ reservation.reservation_time }}</td>
-                            <td>{{ reservation.guests }}</td>
-                            <td>
-                                <a href="{% url 'edit_booking' reservation.booking_code %}" class="btn edit-btn">Edit</a>
-                                <button class="btn cancel-btn" onclick="cancelReservation('{{ reservation.booking_code }}')">Cancel</button>
-                            </td>
+                            <th>Reservation Code</th>
+                            <th>Date & Time</th>
+                            <th>Table Number</th>
+                            <th>Guests</th>
+                            <th>Actions</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                            <tr>
+                                <td>{{ reservation.booking_code }}</td>
+                                <td>
+                                    {{ reservation.date|date:"M d, Y" }} at {{ reservation.time|time:"h:i A" }}
+                                </td>
+                                <td>Table {{ reservation.table.number }}</td>
+                                <td>{{ reservation.guests }}</td>
+                                <td class="action-buttons">
+                                    <a href="{% url 'edit_booking' reservation.booking_code %}" class="btn edit-btn">Edit</a>
+                                    <button class="btn cancel-btn" data-url="{% url 'cancel_booking' reservation.booking_code %}" onclick="cancelReservation(this)">
+                                        Cancel
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         {% else %}
-            <p>You have no reservations at the moment.</p>
+            <p class="no-reservations">You have no reservations at the moment.</p>
         {% endif %}
     </div>
 
     <script>
-        function cancelReservation(bookingCode) {
-            console.log("Booking code:", bookingCode);  // Check if this value is valid
-            
-            if (!bookingCode) {
+        function cancelReservation(button) {
+            const cancelUrl = button.getAttribute("data-url");
+
+            if (!cancelUrl) {
                 alert("Invalid reservation code.");
-                return;  // Exit if bookingCode is empty or invalid
+                return;
             }
-            
-            const confirmation = confirm("Are you sure you want to cancel this reservation?");
-            if (confirmation) {
-                // Redirect to the cancel_booking view with the booking code
-                window.location.href = "{% url 'cancel_booking' booking_code=bookingCode %}";
-            }
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This reservation will be permanently canceled.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, cancel it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(cancelUrl, { method: "POST", headers: { "X-CSRFToken": "{{ csrf_token }}" } })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire("Canceled!", "Your reservation has been canceled.", "success")
+                                    .then(() => location.reload());
+                            } else {
+                                Swal.fire("Error", "Failed to cancel reservation.", "error");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            Swal.fire("Error", "An error occurred while canceling.", "error");
+                        });
+                }
+            });
         }
     </script>
+
+    <!-- SweetAlert2 for better pop-ups -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 {% endblock %}

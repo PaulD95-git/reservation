@@ -8,11 +8,16 @@
         <img src="{% static 'restaurant/images/hero.jpg' %}" alt="Restaurant" class="hero-image">
         <div class="hero-content">
             <!-- Book Now Button -->
-            <a href="{% url 'book_table' %}" class="btn">Book Now</a>
             {% if user.is_authenticated %}
-            <a href="{% url 'manage_reservations' %}" class="btn btn-secondary" style="margin-top: 10px;">Manage Reservations</a>
+                <a href="{% url 'book_table' %}" class="btn">Book Now</a>
+            {% else %}
+                <!-- Redirect to login page if not authenticated -->
+                <a href="{% url 'login' %}" class="btn">Book Now</a>
             {% endif %}
             
+            {% if user.is_authenticated %}
+                <a href="{% url 'manage_reservations' %}" class="btn btn-secondary" style="margin-top: 10px;">Manage Reservations</a>
+            {% endif %}
         </div>
     </section>
 
