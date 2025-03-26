@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .about-container {
+            max-width: 900px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .about-container h1 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .about-container p {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .about-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-section {
+            margin-top: 30px;
+        }
+
+        .team-members {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 250px;
+        }
+
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .team-members {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+
+    <main>
+        <div class="about-container">
+            <h1>Welcome to Savory Heaven</h1>
+            <img src="/static/images/restaurant.jpg" alt="Savory Heaven Restaurant" class="about-image">
+            <p>Located in the heart of Dublin, Savory Heaven is a **5-star** fine dining restaurant, offering an exquisite culinary experience. Our menu is crafted with the finest ingredients, ensuring every bite is a taste of perfection.</p>
+            <p>From fresh seafood to premium cuts of meat and handcrafted desserts, we strive to provide an unforgettable experience for every guest.</p>
+            <p>Our chefs bring passion and creativity to every dish, ensuring a perfect balance of flavor, elegance, and presentation.</p>
+            
+            <div class="team-section">
+                <h2>Meet Our Team</h2>
+                <div class="team-members">
+                    <div class="team-member">
+                        <img src="/static/images/chef1.jpg" alt="Head Chef">
+                        <h3>James O'Connor</h3>
+                        <p>Head Chef</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="/static/images/chef2.jpg" alt="Sous Chef">
+                        <h3>Emily Fitzgerald</h3>
+                        <p>Sous Chef</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="/static/images/manager.jpg" alt="Restaurant Manager">
+                        <h3>Michael Dunne</h3>
+                        <p>Restaurant Manager</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
