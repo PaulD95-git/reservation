@@ -47,6 +47,7 @@ urlpatterns = [
     path('add_reservation/', views.add_reservation, name='add_reservation'),  # Add a new reservation (admin or owner)
     path('make_reservation/', views.make_reservation, name='make_reservation'),  # Make a reservation (customer)
     path('menu/', views.menu, name='menu'),  # Display the restaurant menu
+    path('about/', views.about, name='about'),
 
     # Home page (landing page)
     path('', views.home, name='home'),  # Home page route
