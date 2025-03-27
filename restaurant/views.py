@@ -3,7 +3,11 @@ from .forms import ReservationForm, SignupForm
 from .models import Reservation
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.contrib import messages
+from django.shortcuts import render
+import datetime
+from django.http import JsonResponse
 
 # Home view
 
@@ -130,9 +134,54 @@ def make_reservation(request):
 def menu(request):
     return render(request, 'menu.html')
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 465f565e77fed44022d0516315700a0b840ee2bf
 def about(request):
     return render(request, 'about.html')
+
+
+def contact_view(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        message = request.POST.get("message")
+
+        # Send an email (optional)
+        send_mail(
+            f"New Contact Message from {name}",
+            message,
+            email,
+            ["yourrestaurant@example.com"],  # Replace with your restaurant's email
+            fail_silently=False,
+        )
+
+        messages.success(request, "Your message has been sent successfully!")
+        return redirect("contact")  # Redirect to the same contact page
+
+    return render(request, "contact.html")
+
+
+def your_view(request):
+    # Get API key from the environment variable
+    api_key = os.getenv('GOOGLE_MAPS_API_KEY')
+    return render(request, 'your_template.html', {'api_key': api_key})
+
+
+def reservation_form(request):
+    form = ReservationForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        # Handle successful form submission
+        return render(request, 'reservation_success.html')
+
+    return render(request, 'reservation_form.html', {'form': form})
+
+
+def get_available_times(request):
+    date = request.GET.get('date')  # Get the selected date from the query params
+    if date:
+        form = ReservationForm(data={'date': date})  # Pass the date into the form
+        time_choices = form.get_time_choices(date)  # Get available time choices for that date
+
+        # Return the available times in a JSON response
+        return JsonResponse({'times': [time[1] for time in time_choices]})
+    return JsonResponse({'times': []})  # If no date is selected, return an empty list

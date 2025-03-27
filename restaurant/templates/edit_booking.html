@@ -1,30 +1,118 @@
 {% extends 'base.html' %}
-{% load static %} 
+{% load static %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'restaurant/css/reservation_form.css' %}">
 
-    <div class="container">
-        <h1>Make a Reservation</h1>
+<div class="container">
+    <h1>Edit Reservation</h1>
 
-        <!-- Display opening hours -->
-        <div class="opening-hours">
-            <p><strong>Opening Hours:</strong></p>
-            <ul>
-                <li>Monday - Friday: 09:00 AM - 08:00 PM</li>
-                <li>Saturday: 09:00 AM - 10:00 PM</li>
-                <li>Sunday: 10:00 AM - 05:00 PM</li>
-            </ul>
+    <!-- Display opening hours -->
+    <div class="opening-hours">
+        <p><strong>Opening Hours:</strong></p>
+        <ul>
+            <li>Monday - Friday: 09:00 AM - 08:00 PM</li>
+            <li>Saturday: 09:00 AM - 10:00 PM</li>
+            <li>Sunday: 10:00 AM - 05:00 PM</li>
+        </ul>
+    </div>
+
+    <!-- Edit Reservation Form -->
+    <form method="post" class="reservation-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">Name</label>
+            {{ form.name }}
         </div>
 
-        <!-- Reservation form -->
-        <form method="post" class="reservation-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn">Submit Changes</button>
-        </form>
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+        </div>
 
-        <!-- Link back to homepage -->
-        <a href="{% url 'manage_reservations' %}" class="back-home">Back to Manage</a>
-    </div>
+        <div class="form-group">
+            <label for="{{ form.phone.id_for_label }}">Phone</label>
+            {{ form.phone }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.date.id_for_label }}">Date</label>
+            {{ form.date }}
+        </div>
+
+        <!-- Time Dropdown -->
+        <div class="form-group">
+            <label for="id_time">Time</label>
+            <select name="time" id="id_time" class="form-control">
+                <option value="">Select a time</option>
+                {% for time in form.fields.time.choices %}
+                    <option value="{{ time.0 }}" {% if form.time.value == time.0 %}selected{% endif %}>
+                        {{ time.1 }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.guests.id_for_label }}">Guests</label>
+            {{ form.guests }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.table.id_for_label }}">Table</label>
+            {{ form.table }}
+        </div>
+
+        <button type="submit" class="btn">Submit Changes</button>
+    </form>
+
+    <!-- Link back to Manage Reservations -->
+    <a href="{% url 'manage_reservations' %}" class="back-home">Back to Manage</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dateInput = document.querySelector('input[name="date"]');
+        const timeSelect = document.querySelector('select[name="time"]');
+
+        function updateTimeOptions() {
+            const selectedDate = dateInput.value;
+
+            if (!selectedDate) {
+                return;
+            }
+
+            timeSelect.innerHTML = '<option value="">Loading...</option>';
+
+            fetch(`/get-available-times/?date=${selectedDate}`)
+                .then(response => response.json())
+                .then(data => {
+                    timeSelect.innerHTML = '<option value="">Select a time</option>';
+
+                    data.times.forEach(time => {
+                        const option = document.createElement('option');
+                        option.value = time;
+                        option.textContent = time;
+                        if (time === "{{ form.time.value }}") {
+                            option.selected = true;
+                        }
+                        timeSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching available times:', error);
+                    timeSelect.innerHTML = '<option value="">Error loading times</option>';
+                });
+        }
+
+        // Update available times when the date is changed
+        dateInput.addEventListener('change', updateTimeOptions);
+
+        // Preload times for the initially selected date
+        updateTimeOptions();
+    });
+</script>
+
 {% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        .contact-container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .contact-container h1 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+        }
+
+        .contact-info p {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .contact-form {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .contact-form label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .contact-form input, 
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .contact-form button {
+            margin-top: 15px;
+            background: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background: #0056b3;
+        }
+
+        .map-container {
+            margin-top: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 350px;
+            border: none;
+            border-radius: 8px;
+        }
+    </style>
+
+    <div class="contact-container">
+        <h1>Contact Us</h1>
+
+        <div class="contact-info">
+            <p><strong>Address:</strong> 123 Foodie Street, Dublin, Ireland</p>
+            <p><strong>Phone:</strong> +353 1 234 5678</p>
+            <p><strong>Email:</strong> contact@savoryheaven.com</p>
+        </div>
+
+        <div class="contact-form">
+            <h2>Send us a message</h2>
+            <form method="POST" action="{% url 'contact' %}">
+                {% csrf_token %}
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Your Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Your Message</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+
+        <div class="map-container">
+            <h2>Find Us</h2>
+              <!-- Google Map Section -->
+    <section id="google-map" style="width: 100%; height: 500px; margin-top: 20px;">
+        <!-- Google Maps Embed API with Advanced Marker -->
+        <div id="map" style="height: 100%;"></div>
+
+        <!-- Script to load the Google Map with a marker -->
+        <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwzv81Aoe4wCY9jQM9Tq88bFRsIB92l4Y&callback=initMap&libraries=marker&v=beta"></script>
+        <script>
+            // Initialize the map
+            function initMap() {
+                var location = { lat: 53.34986877441406, lng: -6.260299205780029 }; // Dublin, Ireland coordinates
+
+                // Create a map centered at Dublin
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 14,
+                    center: location
+                });
+
+                // Create a marker at the location
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    title: 'Dublin, Ireland'
+                });
+            }
+        </script>
+    </section>
+        </div>
+    </div>
+
+{% endblock %}

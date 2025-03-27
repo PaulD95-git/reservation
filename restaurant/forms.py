@@ -12,7 +12,15 @@ import datetime
 from django.contrib.auth.models import User
 
 
+from django import forms
+from .models import Reservation
+from django.core.exceptions import ValidationError
+import datetime
+
+
 class ReservationForm(forms.ModelForm):
+    time = forms.ChoiceField(choices=[], widget=forms.Select())  # ✅ Define properly
+
     class Meta:
         model = Reservation
         fields = ['name', 'email', 'phone', 'date', 'time', 'guests', 'table']
@@ -23,11 +31,20 @@ class ReservationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Generate the available time slots for selection
-        self.fields['time'] = forms.ChoiceField(choices=self.get_time_choices(), widget=forms.Select())
+        # If a date is already selected, populate the time choices
+        if 'date' in self.data:
+            date = self.data.get('date')
+            self.fields['time'].choices = self.get_time_choices(date)
+        else:
+            self.fields['time'].choices = [("", "Select a time")]
 
-    def get_time_choices(self):
-        """Generate available time slots based on opening hours."""
+    def get_time_choices(self, date):
+        """Generate available time slots based on the opening hours and table availability."""
+        try:
+            day_of_week = datetime.datetime.strptime(date, "%Y-%m-%d").weekday()
+        except ValueError:
+            return []  # If date is invalid, return empty list
+
         opening_hours = {
             (0, 1, 2, 3, 4): (9, 20),  # Mon-Fri: 09:00 - 20:00
             (5,): (9, 22),             # Sat: 09:00 - 22:00
@@ -36,36 +53,28 @@ class ReservationForm(forms.ModelForm):
 
         choices = []
         for days, (open_hour, close_hour) in opening_hours.items():
-            for hour in range(open_hour, close_hour):  # Exclude closing hour
-                choices.append((f"{hour:02d}:00", f"{hour:02d}:00"))
+            if day_of_week in days:
+                for hour in range(open_hour, close_hour):
+                    time_str = f"{hour:02d}:00"
+                    
+                    # Check if a reservation exists at this time
+                    if not Reservation.objects.filter(date=date, time=time_str).exists():
+                        choices.append((time_str, time_str))
 
         return choices
 
-    def clean_time(self):
-        """Validate selected time based on opening hours."""
-        date = self.cleaned_data.get("date")
-        time = self.cleaned_data.get("time")
+    def clean(self):
+        cleaned_data = super().clean()
+        date = cleaned_data.get("date")
+        time = cleaned_data.get("time")
+        table = cleaned_data.get("table")
 
-        if not date or not time:
-            return time  # Skip validation if missing data
+        if date and time and table:
+            # Check if the selected table is already booked at the given time
+            if Reservation.objects.filter(date=date, time=time, table=table).exists():
+                raise ValidationError(f"⚠️ Table {table.number} is already booked at {time} on {date}. Please select another time.")
 
-        day_of_week = date.weekday()  # Monday = 0, Sunday = 6
-        opening_hours = {
-            (0, 1, 2, 3, 4): (9, 20),  # Mon-Fri: 09:00 - 20:00
-            (5,): (9, 22),             # Sat: 09:00 - 22:00
-            (6,): (10, 17),            # Sun: 10:00 - 17:00
-        }
-
-        valid_times = []
-        for days, (open_hour, close_hour) in opening_hours.items():
-            if day_of_week in days:
-                valid_times = [datetime.time(hour, 0) for hour in range(open_hour, close_hour)]
-
-        selected_time = datetime.datetime.strptime(time, "%H:%M").time()
-        if selected_time not in valid_times:
-            raise ValidationError(f"Invalid time selection. Please select an hourly time between {valid_times[0].strftime('%H:%M')} and {valid_times[-1].strftime('%H:%M')}.")
-        
-        return selected_time
+        return cleaned_data
 
 
 

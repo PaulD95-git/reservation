@@ -135,3 +135,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Define the path to the templates directory
 TEMPLATES_DIR = BASE_DIR / 'templates'  # This points to the templates folder in the project directory
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"  # Replace with your email provider
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "your_email@gmail.com"  # Replace with your email
+EMAIL_HOST_PASSWORD = "your_password"  # Use an app password for security
+

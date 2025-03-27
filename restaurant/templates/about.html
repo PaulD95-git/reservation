@@ -2,7 +2,6 @@
 
 {% block content %}
     <style>
-<<<<<<< HEAD
         body {
             display: flex;
             flex-direction: column;
@@ -14,25 +13,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 100px 20px; /* Added padding to prevent overlap */
         }
 
-        .about-container {
-            max-width: 900px;
-            text-align: center;
-            padding: 20px;
-=======
         .about-container {
             max-width: 900px;
             margin: auto;
             text-align: center;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
->>>>>>> 465f565e77fed44022d0516315700a0b840ee2bf
         }
 
         .about-container h1 {
@@ -91,12 +79,10 @@
         }
     </style>
 
-<<<<<<< HEAD
     <main>
         <div class="about-container">
             <h1>Welcome to Savory Heaven</h1>
-            <img src="/static/images/restaurant.jpg" alt="Savory Heaven Restaurant" class="about-image">
-            <p>Located in the heart of Dublin, Savory Heaven is a **5-star** fine dining restaurant, offering an exquisite culinary experience. Our menu is crafted with the finest ingredients, ensuring every bite is a taste of perfection.</p>
+            <p>Located in the heart of Dublin, Savory Heaven is a <strong>5-star</strong> fine dining restaurant, offering an exquisite culinary experience. Our menu is crafted with the finest ingredients, ensuring every bite is a taste of perfection.</p>
             <p>From fresh seafood to premium cuts of meat and handcrafted desserts, we strive to provide an unforgettable experience for every guest.</p>
             <p>Our chefs bring passion and creativity to every dish, ensuring a perfect balance of flavor, elegance, and presentation.</p>
             
@@ -104,48 +90,20 @@
                 <h2>Meet Our Team</h2>
                 <div class="team-members">
                     <div class="team-member">
-                        <img src="/static/images/chef1.jpg" alt="Head Chef">
-                        <h3>James O'Connor</h3>
+                        <h3>Paul Dowdall</h3>
                         <p>Head Chef</p>
                     </div>
                     <div class="team-member">
-                        <img src="/static/images/chef2.jpg" alt="Sous Chef">
-                        <h3>Emily Fitzgerald</h3>
+                        <h3>Kayleigh Gogarty</h3>
                         <p>Sous Chef</p>
                     </div>
                     <div class="team-member">
-                        <img src="/static/images/manager.jpg" alt="Restaurant Manager">
-                        <h3>Michael Dunne</h3>
+                        <h3>Sharon Mcmanus</h3>
                         <p>Restaurant Manager</p>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-=======
-    <div class="about-container">
-        <h1>Welcome to Savory Heaven</h1>
-        <p>Located in the heart of Dublin, Savory Heaven is a **5-star** fine dining restaurant, offering an exquisite culinary experience. Our menu is crafted with the finest ingredients, ensuring every bite is a taste of perfection.</p>
-        <p>From fresh seafood to premium cuts of meat and handcrafted desserts, we strive to provide an unforgettable experience for every guest.</p>
-        <p>Our chefs bring passion and creativity to every dish, ensuring a perfect balance of flavor, elegance, and presentation.</p>
-        
-        <div class="team-section">
-            <h2>Meet Our Team</h2>
-            <div class="team-members">
-                <div class="team-member">
-                    <h3>James O'Connor</h3>
-                    <p>Head Chef</p>
-                </div>
-                <div class="team-member">
-                    <h3>Emily Fitzgerald</h3>
-                    <p>Sous Chef</p>
-                </div>
-                <div class="team-member">
-                    <h3>Michael Dunne</h3>
-                    <p>Restaurant Manager</p>
-                </div>
-            </div>
-        </div>
-    </div>
->>>>>>> 465f565e77fed44022d0516315700a0b840ee2bf
+
 {% endblock %}

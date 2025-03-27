@@ -28,29 +28,33 @@ from restaurant import views  # Importing views from the 'restaurant' app
 # Define URL patterns
 urlpatterns = [
     # Auth-related URLs
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),  # Login page
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),  # Logout page
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),  
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),  
 
     # Restaurant reservation related URLs
-    path('book_table/', views.book_table, name='book_table'),  # Booking a table
-    path('booking_success/', views.booking_success, name='booking_success'),  # After a successful booking
+    path('book_table/', views.book_table, name='book_table'),  
+    path('booking_success/', views.booking_success, name='booking_success'),  
 
-    # Booking management URLs (edit and cancel reservations)
-    path('edit_booking/<uuid:booking_code>/', views.edit_booking, name='edit_booking'),  # Edit a booking by booking code
-    path('cancel_booking/<uuid:booking_code>/', views.cancel_booking, name='cancel_booking'),  # Cancel a booking by booking code
+    # Booking management URLs
+    path('edit_booking/<uuid:booking_code>/', views.edit_booking, name='edit_booking'),  
+    path('cancel_booking/<uuid:booking_code>/', views.cancel_booking, name='cancel_booking'),  
 
     # Sign up and manage reservations URLs
-    path('signup/', views.signup, name='signup'),  # Signup page for new users
-    path('manage_reservations/', views.manage_reservations, name='manage_reservations'),  # Manage user's reservations
+    path('signup/', views.signup, name='signup'),  
+    path('manage_reservations/', views.manage_reservations, name='manage_reservations'),  
 
     # Other restaurant-related URLs
-    path('add_reservation/', views.add_reservation, name='add_reservation'),  # Add a new reservation (admin or owner)
-    path('make_reservation/', views.make_reservation, name='make_reservation'),  # Make a reservation (customer)
-    path('menu/', views.menu, name='menu'),  # Display the restaurant menu
+    path('add_reservation/', views.add_reservation, name='add_reservation'),  
+    path('make_reservation/', views.make_reservation, name='make_reservation'),  
+    path('menu/', views.menu, name='menu'),  
     path('about/', views.about, name='about'),
 
-    # Home page (landing page)
-    path('', views.home, name='home'),  # Home page route
+    # Correct the contact path here:
+    path('contact/', views.contact_view, name='contact'),
+    path('get-available-times/', views.get_available_times, name='get_available_times'),
+
+    # Home page
+    path('', views.home, name='home'),  
 
     # Admin
     path('admin/', admin.site.urls),

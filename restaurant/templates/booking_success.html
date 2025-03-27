@@ -1,21 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Successful</title>
-</head>
-<body>
-    <h1>Booking Successful!</h1>
-<p>Thank you for your reservation, {{ reservation.name }}.</p>
-<p>Details:</p>
-<ul>
-    <li>Date: {{ reservation.date }}</li>
-    <li>Time: {{ reservation.time }}</li>
-    <li>Table: {{ reservation.table.number }} (Seats: {{ reservation.table.capacity }})</li>
-    <li>Guests: {{ reservation.guests }}</li>
-    <li>Booking Code: {{ reservation.booking_code }}</li>
-</ul>
-<a href="{% url 'home' %}">Home</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .container {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 150px auto;
+        text-align: center;
+    }
+
+    h1 {
+        color: #28a745;
+    }
+
+    .booking-details {
+        list-style: none;
+        padding: 0;
+        text-align: left;
+    }
+
+    .booking-details li {
+        background: #f1f1f1;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 18px;
+    }
+
+    .btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #007bff;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .btn:hover {
+        background: #0056b3;
+    }
+</style>
+
+<div class="container">
+    <h1>🎉 Booking Successful!</h1>
+    <p>Thank you for your reservation, <strong>{{ reservation.name }}</strong>.</p>
+    <p><strong>Your booking details:</strong></p>
+
+    <ul class="booking-details">
+        <li><strong>Date:</strong> {{ reservation.date }}</li>
+        <li><strong>Time:</strong> {{ reservation.time }}</li>
+        <li><strong>Table:</strong> {{ reservation.table.number }} (Seats: {{ reservation.table.capacity }})</li>
+        <li><strong>Guests:</strong> {{ reservation.guests }}</li>
+        <li><strong>Booking Code:</strong> {{ reservation.booking_code }}</li>
+    </ul>
+
+    <a href="{% url 'home' %}" class="btn">🏠 Back to Home</a>
+</div>
+{% endblock %}
