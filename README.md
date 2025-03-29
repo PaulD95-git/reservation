@@ -73,17 +73,17 @@ The **Reservation System** is a dynamic, user-friendly web application designed 
 
    ![Responsive Design](staticfiles/restaurant/images/booking-table.png)
 
-### 8. **Menu**
+### 7. **Menu**
 
-    ![Menu](staticfiles/restaurant/images/menu.JPG)
+   ![Menu](staticfiles/restaurant/images/menu.JPG)
 
-### 9. **About**
+### 7. **About**
 
-    ![About](staticfiles/restaurant/images/about.JPG)
+   ![About](staticfiles/restaurant/images/about.JPG)
 
-### 10. **Contact**
+### 7. **Contact**
 
-    ![Contact](staticfiles/restaurant/images/contact.JPG)
+   ![Contact](staticfiles/restaurant/images/contact.JPG)
 
 ---
 
