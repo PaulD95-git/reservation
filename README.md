@@ -27,7 +27,7 @@ The **Reservation System** is a dynamic, user-friendly web application designed 
    - Users can browse available time slots and make reservations for their preferred date and time.
    - The system provides an easy-to-use interface for selecting the number of people, time, and special requirements (if any).
 
-   ![Booking a Table](static/images/booking_table.JPG)
+   ![Booking a Table](staticfiles/images/booking_table.JPG)
    ![Booking a Table](static/images/booking_table2.JPG)
    ![Booking a Table](static/images/booking_success.JPG)
 
