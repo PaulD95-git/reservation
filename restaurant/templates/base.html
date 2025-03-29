@@ -12,18 +12,22 @@
     <link rel="stylesheet" href="{% static 'restaurant/css/header.css' %}">
     <link rel="stylesheet" href="{% static 'restaurant/css/footer.css' %}">
     
-    <!-- Extra CSS block for pages that need additional styles -->
+    <!-- Extra CSS block for specific pages -->
     {% block extra_css %}{% endblock %}
 
     <!-- FontAwesome for icons -->
     <script src="https://kit.fontawesome.com/de0549e373.js" crossorigin="anonymous"></script>
 </head>
 <body>
+  
+  <!-- Navigation Bar -->
   <nav class="navbar">
     <div class="content">
         <div class="logo">
-            <a href="#">Savory Haven</a>
+            <a href="{% url 'home' %}">Savory Haven</a>
         </div>
+        
+        <!-- Navigation Menu -->
         <ul class="menu-list">
             <div class="icon cancel-btn">
                 <i class="fas fa-times"></i>
@@ -32,6 +36,7 @@
             <li><a href="{% url 'menu' %}">Menu</a></li>
             <li><a href="{% url 'about' %}">About</a></li>
             <li><a href="{% url 'contact' %}">Contact</a></li>
+            
             {% if user.is_authenticated %}
                 <li><a href="{% url 'logout' %}">Logout</a></li>
             {% else %}
@@ -39,46 +44,53 @@
                 <li><a href="{% url 'signup' %}">Signup</a></li>
             {% endif %}
         </ul>
+
+        <!-- Mobile Menu Button -->
         <div class="icon menu-btn">
             <i class="fas fa-bars"></i>
         </div>
     </div>
-</nav>
+  </nav>
 
-<!-- Main Content -->
-<main>
-    {% block content %}
-    {% endblock %}
-</main>
+  <!-- Main Content -->
+  <main>
+      {% block content %}
+      {% endblock %}
+  </main>
 
-<!-- Footer Section -->
-<footer>
-    <div class="footer-content">
-        <p>&copy; 2025 Reservation System. All rights reserved.</p>
-    </div>
-</footer>
+  <!-- Footer Section -->
+  <footer>
+      <div class="footer-content">
+          <p>&copy; 2025 Reservation System. All rights reserved.</p>
+      </div>
+  </footer>
 
-<!-- Hamburger Menu Script -->
-<script>
-const body = document.querySelector("body");
+  <!-- Hamburger Menu Script -->
+  <script>
+    const body = document.querySelector("body");
     const navbar = document.querySelector(".navbar");
     const menuBtn = document.querySelector(".menu-btn");
     const cancelBtn = document.querySelector(".cancel-btn");
-    menuBtn.onclick = ()=>{
+
+    // Show mobile menu
+    menuBtn.onclick = () => {
       navbar.classList.add("show");
       menuBtn.classList.add("hide");
       body.classList.add("disabled");
     }
-    cancelBtn.onclick = ()=>{
+
+    // Hide mobile menu
+    cancelBtn.onclick = () => {
       body.classList.remove("disabled");
       navbar.classList.remove("show");
       menuBtn.classList.remove("hide");
     }
-    window.onscroll = ()=>{
+
+    // Sticky navbar on scroll
+    window.onscroll = () => {
       this.scrollY > 20 ? navbar.classList.add("sticky") : navbar.classList.remove("sticky");
     }
-
-</script>
+  </script>
 
 </body>
 </html>

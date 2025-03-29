@@ -7,7 +7,7 @@
 <div class="container">
     <h1>Edit Reservation</h1>
 
-    <!-- Display opening hours -->
+    <!-- Display Opening Hours -->
     <div class="opening-hours">
         <p><strong>Opening Hours:</strong></p>
         <ul>
@@ -41,7 +41,7 @@
             {{ form.date }}
         </div>
 
-        <!-- Time Dropdown -->
+        <!-- Time Dropdown (Dynamically Updated) -->
         <div class="form-group">
             <label for="id_time">Time</label>
             <select name="time" id="id_time" class="form-control">
@@ -67,52 +67,58 @@
         <button type="submit" class="btn">Submit Changes</button>
     </form>
 
-    <!-- Link back to Manage Reservations -->
+    <!-- Link Back to Manage Reservations -->
     <a href="{% url 'manage_reservations' %}" class="back-home">Back to Manage</a>
 </div>
 
+<!-- jQuery for Ajax Requests -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const dateInput = document.querySelector('input[name="date"]');
-        const timeSelect = document.querySelector('select[name="time"]');
+document.addEventListener('DOMContentLoaded', function () {
+    const dateInput = document.querySelector('input[name="date"]');
+    const timeSelect = document.querySelector('select[name="time"]');
 
-        function updateTimeOptions() {
-            const selectedDate = dateInput.value;
+    function updateTimeOptions() {
+        const selectedDate = dateInput.value;
 
-            if (!selectedDate) {
-                return;
-            }
-
-            timeSelect.innerHTML = '<option value="">Loading...</option>';
-
-            fetch(`/get-available-times/?date=${selectedDate}`)
-                .then(response => response.json())
-                .then(data => {
-                    timeSelect.innerHTML = '<option value="">Select a time</option>';
-
-                    data.times.forEach(time => {
-                        const option = document.createElement('option');
-                        option.value = time;
-                        option.textContent = time;
-                        if (time === "{{ form.time.value }}") {
-                            option.selected = true;
-                        }
-                        timeSelect.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching available times:', error);
-                    timeSelect.innerHTML = '<option value="">Error loading times</option>';
-                });
+        if (!selectedDate) {
+            timeSelect.innerHTML = '<option value="">Select a time</option>';
+            return;
         }
 
-        // Update available times when the date is changed
-        dateInput.addEventListener('change', updateTimeOptions);
+        timeSelect.innerHTML = '<option value="">Loading...</option>';
 
-        // Preload times for the initially selected date
-        updateTimeOptions();
-    });
+        fetch(`/get-available-times/?date=${selectedDate}`)
+            .then(response => response.json())
+            .then(data => {
+                timeSelect.innerHTML = '<option value="">Select a time</option>';
+
+                data.times.forEach(time => {
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.textContent = time;
+                    
+                    // Preselect the saved value
+                    if (time === "{{ form.time.value }}") {
+                        option.selected = true;
+                    }
+                    
+                    timeSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching available times:', error);
+                timeSelect.innerHTML = '<option value="">Error loading times</option>';
+            });
+    }
+
+    // Update available times when the date is changed
+    dateInput.addEventListener('change', updateTimeOptions);
+
+    // Preload times for the initially selected date
+    updateTimeOptions();
+});
 </script>
 
 {% endblock %}

@@ -2,18 +2,18 @@
 
 {% block content %}
     <style>
-        /* Centering the reservation management section */
+        /* Styling for the reservation management section */
         .reservation-management {
             max-width: 1100px;
-            margin: 80px auto; /* Center the content and add space below the navbar */
+            margin: 80px auto;
             padding: 20px;
             text-align: center;
         }
 
-        /* Container for the table, allow horizontal scrolling */
+        /* Enable horizontal scrolling for the table */
         .table-container {
-            overflow-x: auto; /* Horizontal scroll */
-            margin-top: 20px; /* Add space between content and the table */
+            overflow-x: auto;
+            margin-top: 20px;
         }
 
         /* Table styling */
@@ -26,28 +26,18 @@
             overflow: hidden;
         }
 
+        /* Table headers and cells styling */
         .reservation-table th, .reservation-table td {
             padding: 12px 16px;
             text-align: center;
             border-bottom: 1px solid #ddd;
-            white-space: nowrap;
         }
 
-        .reservation-table th {
-            background: #007bff;
-            color: white;
-            font-weight: bold;
-        }
-
-        .reservation-table tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-
+        /* Buttons for actions (Edit, Cancel) */
         .action-buttons {
             display: flex;
             gap: 5px;
             justify-content: center;
-            flex-wrap: wrap;
         }
 
         .btn {
@@ -55,18 +45,13 @@
             border: none;
             cursor: pointer;
             border-radius: 5px;
-            text-decoration: none;
             font-weight: bold;
-            white-space: nowrap;
         }
 
+        /* Edit and cancel button styles */
         .edit-btn {
             background-color: #28a745;
             color: white;
-        }
-
-        .edit-btn:hover {
-            background-color: #218838;
         }
 
         .cancel-btn {
@@ -74,37 +59,24 @@
             color: white;
         }
 
-        .cancel-btn:hover {
-            background-color: #c82333;
-        }
-
-        .no-reservations {
-            font-size: 18px;
-            color: #555;
-            margin-top: 20px;
-        }
-
-        /* Mobile Styling */
+        /* Mobile responsiveness */
         @media (max-width: 768px) {
             .reservation-table {
-                table-layout: auto; /* Let the table adapt to content width */
+                table-layout: auto;
             }
 
             .reservation-table th, .reservation-table td {
                 padding: 8px;
-                font-size: 14px; /* Reduce font size on mobile */
-            }
-
-            /* Add spacing for the action buttons */
-            .action-buttons {
-                gap: 10px;
-                flex-wrap: nowrap;
+                font-size: 14px;
             }
         }
     </style>
 
+    <!-- Reservation Management Section -->
     <div class="reservation-management">
         <h1 class="page-title">Your Reservations</h1>
+
+        <!-- If reservations exist, display them in a table -->
         {% if reservations %}
             <div class="table-container">
                 <table class="reservation-table">
@@ -125,7 +97,9 @@
                                 <td>Table {{ reservation.table.number }}</td>
                                 <td>{{ reservation.guests }}</td>
                                 <td class="action-buttons">
+                                    <!-- Edit button link -->
                                     <a href="{% url 'edit_booking' reservation.booking_code %}" class="btn edit-btn">Edit</a>
+                                    <!-- Cancel button with confirmation -->
                                     <button class="btn cancel-btn" data-url="{% url 'cancel_booking' reservation.booking_code %}" onclick="cancelReservation(this)">
                                         Cancel
                                     </button>
@@ -136,11 +110,14 @@
                 </table>
             </div>
         {% else %}
+            <!-- Message when no reservations are present -->
             <p class="no-reservations">You have no reservations at the moment.</p>
         {% endif %}
     </div>
 
+    <!-- JavaScript for reservation cancellation -->
     <script>
+        // Function to handle reservation cancellation
         function cancelReservation(button) {
             const cancelUrl = button.getAttribute("data-url");
 
@@ -149,6 +126,7 @@
                 return;
             }
 
+            // Show a confirmation dialog before proceeding with the cancellation
             Swal.fire({
                 title: "Are you sure?",
                 text: "This reservation will be permanently canceled.",
@@ -159,12 +137,13 @@
                 confirmButtonText: "Yes, cancel it!"
             }).then((result) => {
                 if (result.isConfirmed) {
+                    // Send a POST request to cancel the reservation
                     fetch(cancelUrl, { method: "POST", headers: { "X-CSRFToken": "{{ csrf_token }}" } })
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
                                 Swal.fire("Canceled!", "Your reservation has been canceled.", "success")
-                                    .then(() => location.reload());
+                                    .then(() => location.reload());  // Reload the page to reflect cancellation
                             } else {
                                 Swal.fire("Error", "Failed to cancel reservation.", "error");
                             }
@@ -178,5 +157,6 @@
         }
     </script>
 
+    <!-- Include SweetAlert2 for pop-up confirmations -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}

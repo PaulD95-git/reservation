@@ -2,6 +2,7 @@
 
 {% block content %}
     <style>
+        /* Main container styling */
         .contact-container {
             max-width: 900px;
             margin: auto;
@@ -14,6 +15,7 @@
             margin-bottom: 10px;
         }
 
+        /* Contact info styling */
         .contact-info {
             margin-top: 20px;
         }
@@ -24,6 +26,7 @@
             line-height: 1.6;
         }
 
+        /* Contact form styling */
         .contact-form {
             margin-top: 30px;
             text-align: left;
@@ -58,6 +61,7 @@
             background: #0056b3;
         }
 
+        /* Map container styling */
         .map-container {
             margin-top: 30px;
             border-radius: 8px;
@@ -72,19 +76,23 @@
         }
     </style>
 
+    <!-- Contact Section -->
     <div class="contact-container">
         <h1>Contact Us</h1>
 
+        <!-- Contact Information -->
         <div class="contact-info">
             <p><strong>Address:</strong> 123 Foodie Street, Dublin, Ireland</p>
             <p><strong>Phone:</strong> +353 1 234 5678</p>
             <p><strong>Email:</strong> contact@savoryheaven.com</p>
         </div>
 
+        <!-- Contact Form -->
         <div class="contact-form">
             <h2>Send us a message</h2>
             <form method="POST" action="{% url 'contact' %}">
                 {% csrf_token %}
+                
                 <label for="name">Your Name</label>
                 <input type="text" id="name" name="name" required>
 
@@ -98,36 +106,32 @@
             </form>
         </div>
 
+        <!-- Google Map Section -->
         <div class="map-container">
             <h2>Find Us</h2>
-              <!-- Google Map Section -->
-    <section id="google-map" style="width: 100%; height: 500px; margin-top: 20px;">
-        <!-- Google Maps Embed API with Advanced Marker -->
-        <div id="map" style="height: 100%;"></div>
-
-        <!-- Script to load the Google Map with a marker -->
-        <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwzv81Aoe4wCY9jQM9Tq88bFRsIB92l4Y&callback=initMap&libraries=marker&v=beta"></script>
-        <script>
-            // Initialize the map
-            function initMap() {
-                var location = { lat: 53.34986877441406, lng: -6.260299205780029 }; // Dublin, Ireland coordinates
-
-                // Create a map centered at Dublin
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 14,
-                    center: location
-                });
-
-                // Create a marker at the location
-                var marker = new google.maps.Marker({
-                    position: location,
-                    map: map,
-                    title: 'Dublin, Ireland'
-                });
-            }
-        </script>
-    </section>
+            <div id="map" style="width: 100%; height: 500px;"></div>
         </div>
     </div>
+
+    <!-- Google Maps API Integration -->
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwzv81Aoe4wCY9jQM9Tq88bFRsIB92l4Y&callback=initMap"></script>
+    <script>
+        function initMap() {
+            var location = { lat: 53.34986877441406, lng: -6.260299205780029 }; // Dublin, Ireland coordinates
+
+            // Create a map centered at Dublin
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14,
+                center: location
+            });
+
+            // Create a marker at the location
+            var marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: 'Savory Heaven - Dublin, Ireland'
+            });
+        }
+    </script>
 
 {% endblock %}

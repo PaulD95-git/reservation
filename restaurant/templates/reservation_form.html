@@ -21,28 +21,31 @@
     <form method="post" class="reservation-form">
         {% csrf_token %}
 
-        <!-- Render each field manually to exclude automatic time input -->
+        <!-- Input for Name -->
         <div class="form-group">
             <label for="{{ form.name.id_for_label }}">Name</label>
             {{ form.name }}
         </div>
 
+        <!-- Input for Email -->
         <div class="form-group">
             <label for="{{ form.email.id_for_label }}">Email</label>
             {{ form.email }}
         </div>
 
+        <!-- Input for Phone -->
         <div class="form-group">
             <label for="{{ form.phone.id_for_label }}">Phone</label>
             {{ form.phone }}
         </div>
 
+        <!-- Input for Reservation Date -->
         <div class="form-group">
             <label for="{{ form.date.id_for_label }}">Date</label>
             {{ form.date }}
         </div>
 
-        <!-- Time Dropdown (manually added) -->
+        <!-- Time Dropdown (manually added options) -->
         <div class="form-group">
             <label for="id_time">Time</label>
             <select name="time" id="id_time" class="form-control">
@@ -53,16 +56,19 @@
             </select>
         </div>
 
+        <!-- Input for Guests -->
         <div class="form-group">
             <label for="{{ form.guests.id_for_label }}">Guests</label>
             {{ form.guests }}
         </div>
 
+        <!-- Input for Table -->
         <div class="form-group">
             <label for="{{ form.table.id_for_label }}">Table</label>
             {{ form.table }}
         </div>
 
+        <!-- Submit Button to Book the Reservation -->
         <button type="submit" class="btn">Book Now</button>
     </form>
 
@@ -70,7 +76,9 @@
     <a href="{% url 'home' %}" class="back-home">Back to Home</a>
 </div>
 
+<!-- jQuery Library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     // Wait for the DOM to be fully loaded
     document.addEventListener('DOMContentLoaded', function () {
@@ -82,7 +90,7 @@
             const selectedDate = dateInput.value;
 
             if (!selectedDate) {
-                return;
+                return; // If no date is selected, do nothing
             }
 
             timeSelect.innerHTML = '<option value="">Loading...</option>';  // Show loading message
@@ -108,7 +116,7 @@
                 })
                 .catch(error => {
                     console.error('Error fetching available times:', error);
-                    timeSelect.innerHTML = '<option value="">Error loading times</option>';
+                    timeSelect.innerHTML = '<option value="">Error loading times</option>'; // Error message
                 });
         }
 

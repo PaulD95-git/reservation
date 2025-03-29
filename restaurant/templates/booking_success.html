@@ -2,6 +2,7 @@
 
 {% block content %}
 <style>
+    /* Container styling */
     .container {
         background: #fff;
         padding: 30px;
@@ -12,10 +13,12 @@
         text-align: center;
     }
 
+    /* Success message styling */
     h1 {
         color: #28a745;
     }
 
+    /* Booking details list */
     .booking-details {
         list-style: none;
         padding: 0;
@@ -30,6 +33,7 @@
         font-size: 18px;
     }
 
+    /* Button styling */
     .btn {
         display: inline-block;
         margin-top: 20px;
@@ -47,11 +51,13 @@
     }
 </style>
 
+<!-- Booking Confirmation Message -->
 <div class="container">
     <h1>🎉 Booking Successful!</h1>
     <p>Thank you for your reservation, <strong>{{ reservation.name }}</strong>.</p>
     <p><strong>Your booking details:</strong></p>
 
+    <!-- Display reservation details dynamically -->
     <ul class="booking-details">
         <li><strong>Date:</strong> {{ reservation.date }}</li>
         <li><strong>Time:</strong> {{ reservation.time }}</li>
@@ -60,6 +66,7 @@
         <li><strong>Booking Code:</strong> {{ reservation.booking_code }}</li>
     </ul>
 
+    <!-- Button to navigate back to home -->
     <a href="{% url 'home' %}" class="btn">🏠 Back to Home</a>
 </div>
 {% endblock %}

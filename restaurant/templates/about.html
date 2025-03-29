@@ -1,21 +1,24 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}  {# Extends the base template to maintain a consistent layout #}
 
 {% block content %}
     <style>
+        /* Ensure the page takes up the full height of the viewport */
         body {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
+        /* Center content within the main container and add padding */
         main {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 100px 20px; /* Added padding to prevent overlap */
+            padding: 100px 20px; /* Prevent overlap with other content */
         }
 
+        /* Container for the about section */
         .about-container {
             max-width: 900px;
             margin: auto;
@@ -23,11 +26,13 @@
             padding: 20px;
         }
 
+        /* Styling for the main heading */
         .about-container h1 {
-            color: #007bff;
+            color: #007bff;  /* Bootstrap primary blue */
             margin-bottom: 10px;
         }
 
+        /* Styling for paragraph text */
         .about-container p {
             font-size: 18px;
             color: #555;
@@ -35,6 +40,7 @@
             margin-bottom: 20px;
         }
 
+        /* Styling for images in the about section */
         .about-image {
             width: 100%;
             max-height: 400px;
@@ -43,10 +49,12 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
 
+        /* Section for team members */
         .team-section {
             margin-top: 30px;
         }
 
+        /* Layout for team members, making it responsive */
         .team-members {
             display: flex;
             flex-wrap: wrap;
@@ -54,6 +62,7 @@
             gap: 20px;
         }
 
+        /* Individual team member card */
         .team-member {
             background: white;
             border-radius: 8px;
@@ -63,6 +72,7 @@
             width: 250px;
         }
 
+        /* Team member profile picture styling */
         .team-member img {
             width: 100px;
             height: 100px;
@@ -71,6 +81,7 @@
             margin-bottom: 10px;
         }
 
+        /* Responsive adjustments for small screens */
         @media (max-width: 600px) {
             .team-members {
                 flex-direction: column;
@@ -81,14 +92,17 @@
 
     <main>
         <div class="about-container">
+            <!-- Restaurant Name & Introduction -->
             <h1>Welcome to Savory Heaven</h1>
             <p>Located in the heart of Dublin, Savory Heaven is a <strong>5-star</strong> fine dining restaurant, offering an exquisite culinary experience. Our menu is crafted with the finest ingredients, ensuring every bite is a taste of perfection.</p>
             <p>From fresh seafood to premium cuts of meat and handcrafted desserts, we strive to provide an unforgettable experience for every guest.</p>
             <p>Our chefs bring passion and creativity to every dish, ensuring a perfect balance of flavor, elegance, and presentation.</p>
             
+            <!-- Team Section -->
             <div class="team-section">
                 <h2>Meet Our Team</h2>
                 <div class="team-members">
+                    <!-- Individual team members -->
                     <div class="team-member">
                         <h3>Paul Dowdall</h3>
                         <p>Head Chef</p>
@@ -98,7 +112,7 @@
                         <p>Sous Chef</p>
                     </div>
                     <div class="team-member">
-                        <h3>Sharon Mcmanus</h3>
+                        <h3>Sharon McManus</h3>
                         <p>Restaurant Manager</p>
                     </div>
                 </div>

@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% load static %} 
 
 {% block content %}
@@ -10,43 +9,42 @@
             <!-- Book Now Button -->
             {% if user.is_authenticated %}
                 <a href="{% url 'book_table' %}" class="btn">Book Now</a>
-            {% else %}
-                <!-- Redirect to login page if not authenticated -->
-                <a href="{% url 'login' %}" class="btn">Book Now</a>
-            {% endif %}
-            
-            {% if user.is_authenticated %}
                 <a href="{% url 'manage_reservations' %}" class="btn btn-secondary" style="margin-top: 10px;">Manage Reservations</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn">Book Now</a> <!-- Redirects non-auth users to login -->
             {% endif %}
         </div>
     </section>
 
     <!-- Google Map Section -->
     <section id="google-map" style="width: 100%; height: 500px; margin-top: 20px;">
-        <!-- Google Maps Embed API with Advanced Marker -->
         <div id="map" style="height: 100%;"></div>
+    </section>
 
-        <!-- Script to load the Google Map with a marker -->
-        <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwzv81Aoe4wCY9jQM9Tq88bFRsIB92l4Y&callback=initMap&libraries=marker&v=beta"></script>
+    <!-- Defer Google Maps API to improve page load speed -->
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwzv81Aoe4wCY9jQM9Tq88bFRsIB92l4Y&callback=initMap"></script>
 
-        <script>
-            // Initialize the map
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
             function initMap() {
-                var location = { lat: 53.34986877441406, lng: -6.260299205780029 }; // Dublin, Ireland coordinates
+                var location = { lat: 53.3499, lng: -6.2603 }; // Dublin, Ireland coordinates
 
-                // Create a map centered at Dublin
-                var map = new google.maps.Map(document.getElementById('map'), {
+                var map = new google.maps.Map(document.getElementById("map"), {
                     zoom: 14,
                     center: location
                 });
 
-                // Create a marker at the location
-                var marker = new google.maps.Marker({
+                new google.maps.Marker({
                     position: location,
                     map: map,
-                    title: 'Dublin, Ireland'
+                    title: "Savory Haven - Dublin, Ireland"
                 });
             }
-        </script>
-    </section>
+
+            // Ensure Google Maps API is loaded before calling initMap
+            if (typeof google !== "undefined") {
+                initMap();
+            }
+        });
+    </script>
 {% endblock %}

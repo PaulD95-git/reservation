@@ -1,107 +1,116 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<div class="bootstrap-only">
-    <!-- Load Bootstrap only inside this div -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS link -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
-
     <style>
-        .bootstrap-only .bg {
-            position: absolute;
-            z-index: -1;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background-image: radial-gradient(circle at 30% 86%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 8%, transparent 8%, transparent 92%),
-                              radial-gradient(circle at 55% 100%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 8%, transparent 8%, transparent 92%),
-                              radial-gradient(circle at 40% 75%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 6%, transparent 6%, transparent 94%),
-                              radial-gradient(circle at 7% 99%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 6%, transparent 6%, transparent 94%),
-                              radial-gradient(circle at 69% 76%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 6%, transparent 6%, transparent 94%),
-                              radial-gradient(circle at 2% 35%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 6%, transparent 6%, transparent 94%),
-                              radial-gradient(circle at 14% 48%, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 6%, transparent 6%, transparent 94%),
-                              radial-gradient(circle at 28% 87%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.04) 4%, transparent 4%, transparent 96%),
-                              radial-gradient(circle at 65% 14%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.04) 4%, transparent 4%, transparent 96%),
-                              radial-gradient(circle at 51% 36%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.04) 4%, transparent 4%, transparent 96%),
-                              radial-gradient(circle at 6% 93%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.04) 4%, transparent 4%, transparent 96%),
-                              linear-gradient(135deg, rgb(23, 233, 173), rgb(29, 24, 208));
+        /* Main body styling: center content, background gradient */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, rgb(23, 233, 173), rgb(29, 24, 208));
         }
 
-        .bootstrap-only .form-signin {
+        /* Styling for the login form container */
+        .form-signin {
             width: 100%;
             max-width: 330px;
-            margin: auto;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05); /* transparent background */
+            backdrop-filter: blur(10px); /* blur background */
             border-radius: 3px;
-            box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .bootstrap-only .form-signin h1 {
-            margin-top: 0px;
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
-            color: #fff;
-            padding: 15px;
+            box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2); /* form shadow */
             text-align: center;
         }
 
-        .bootstrap-only .form-signin form {
-            padding: 15px;
+        /* Heading styling */
+        .form-signin h1 {
+            color: #fff; /* white text for the title */
         }
 
-        .bootstrap-only .form-signin .btn {
-            background: rgba(255, 255, 255, 0.1);
+        /* Styling for the button */
+        .form-signin .btn {
+            background: rgba(255, 255, 255, 0.1); /* semi-transparent button */
+            border-color: #ced4da; /* button border color */
+            color: #fff; /* white text */
+        }
+
+        /* Focus state styling for input fields */
+        .form-signin .form-control:focus {
             border-color: #ced4da;
-            color: #fff;
-            box-shadow: none;
+            box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2); /* glow effect when focused */
         }
 
-        .bootstrap-only .form-signin .form-control:focus {
-            border-color: #ced4da;
-            box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .bootstrap-only .signuphere {
+        /* Styling for "Sign up here" and "Back to Home" links */
+        .signuphere, .back-home {
             color: white;
-        }
-        
-        .bootstrap-only .copyright {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none; /* no underline */
         }
 
+        /* Hover effect for links */
+        .signuphere:hover, .back-home:hover {
+            text-decoration: underline; /* underline on hover */
+        }
+
+        /* Styling for copyright text */
+        .copyright {
+            color: rgba(255, 255, 255, 0.65); /* light gray color */
+        }
+
+        /* Custom focus outline for form inputs */
+        .form-control:focus {
+            outline: none; /* remove default focus outline */
+            border-color: #007bff; /* change border color on focus */
+        }
     </style>
-
-    <div class="bg"></div>
-
+</head>
+<body>
+    <!-- Main container for the login form -->
     <main class="form-signin">
-        <h1 class="h3">Login</h1>
-
+        <h1 class="h3">Login</h1> <!-- Heading for the login form -->
+        
+        <!-- Form for user login -->
         <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
+            {% csrf_token %} <!-- CSRF token for security -->
+            
+            <!-- Username input field -->
             <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" name="username" required>
+                <input type="text" class="form-control" id="floatingInput" placeholder="Username" name="username" required aria-label="Username">
                 <label for="floatingInput">Username</label>
             </div>
 
+            <!-- Password input field -->
             <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required>
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required aria-label="Password">
                 <label for="floatingPassword">Password</label>
             </div>
 
+            <!-- Remember me checkbox -->
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="1" name="remember_me" id="rememberMeSwitch">
+                <input class="form-check-input" type="checkbox" value="1" name="remember_me" id="rememberMeSwitch" aria-label="Remember me">
                 <label class="form-check-label" for="rememberMeSwitch">Remember me</label>
             </div>
 
+            <!-- Submit button -->
             <button class="w-100 btn btn-lg" type="submit">Sign in</button>
         </form>
 
+        <!-- Link for users who don't have an account to sign up -->
         <p>Don't have an account? <a class="signuphere" href="{% url 'signup' %}">Sign up here</a></p>
 
+        <!-- Link to go back to the home page -->
+        <p><a href="{% url 'home' %}" class="back-home">Back to Home</a></p>
+
+        <!-- Copyright information -->
         <p class="copyright">&copy; 2025</p>
     </main>
-</div>
-{% endblock %}
+</body>
+</html>
